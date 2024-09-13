@@ -7,46 +7,6 @@ DoubleLinkedListNode<T>::DoubleLinkedListNode(T* _value) {
 
 
 template<typename T>
-void DoubleLinkedListNode<T>::attachParent(DoubleLinkedListNode<T>* _last) {
-	//detach ourselves from the current parent
-	if (last != nullptr) {
-		last->next = nullptr;
-	}
-
-	//store the new parent
-	last = _last;
-
-	if (last != nullptr) {
-		//detach the old child
-		last->next->last = nullptr;
-
-		//replace the old child
-		last->next = this;
-	}
-}
-
-template<typename T>
-void DoubleLinkedListNode<T>::attachChild(DoubleLinkedListNode<T>* _next) {
-	//detach the old child from ourselves
-	if (next != nullptr) {
-		next->last = nullptr;
-	}
-
-	//store the new child
-	next = _next;
-
-	if (next != nullptr) {
-		//detach the old parent
-		next->last->next = nullptr;
-
-		//replace the old parent
-		next->last = this;
-	}
-}
-
-
-
-template<typename T>
 DoubleLinkedList<T>::DoubleLinkedList() {
 	first = nullptr;
 	last = nullptr;
@@ -108,6 +68,7 @@ bool DoubleLinkedList<T>::remove(int i) {
 		last = nullptr;
 
 		delete node;
+		length -= 1;
 		return true;
 	}
 	if (parent == nullptr) {
@@ -118,6 +79,7 @@ bool DoubleLinkedList<T>::remove(int i) {
 		child->last = nullptr;
 
 		delete node;
+		length -= 1;
 		return true;
 	}
 	if (child == nullptr) {
@@ -128,6 +90,7 @@ bool DoubleLinkedList<T>::remove(int i) {
 		parent->next = nullptr;
 
 		delete node;
+		length -= 1;
 		return true;
 	}
 
@@ -139,6 +102,7 @@ bool DoubleLinkedList<T>::remove(int i) {
 	child->last = parent;
 
 	delete node;
+	length -= 1
 	return true;
 }
 
@@ -166,6 +130,8 @@ void DoubleLinkedList<T>::insert(T* value, int atIndex) {
 	if (newChild == first) {
 		first = newNode;
 	}
+
+	length += 1;
 }
 
 template<typename T>
@@ -184,6 +150,8 @@ void DoubleLinkedList<T>::insertFront(T* value) {
 		first = newNode;
 		last = newNode;
 	}
+
+	length += 1;
 }
 
 template<typename T>
@@ -202,4 +170,6 @@ void DoubleLinkedList<T>::append(T* value) {
 		first = newNode;
 		last = newNode;
 	}
+
+	length += 1;
 }

@@ -5,8 +5,6 @@ struct DoubleLinkedListNode {
 	T* value;
 
 	DoubleLinkedListNode<T>(T* _value);
-	void attachParent(DoubleLinkedListNode<T>* _last);
-	void attachChild(DoubleLinkedListNode<T>* _next);
 };
 
 template <typename T>
