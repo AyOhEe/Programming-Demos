@@ -6,7 +6,7 @@ struct DoubleLinkedListNode {
 
 	DoubleLinkedListNode<T>(T* _value);
 	void attachParent(DoubleLinkedListNode<T>* _last);
-	void attachChild(DoubleLinkedListNode<T>* _next)
+	void attachChild(DoubleLinkedListNode<T>* _next);
 };
 
 template <typename T>
@@ -26,7 +26,7 @@ public:
 
 	bool remove(int i);
 
-	void insert(T value, int atIndex);
-	void insertFront(T value);
-	void append(T value);
+	void insert(T* value, int atIndex);
+	void insertFront(T* value);
+	void append(T* value);
 };

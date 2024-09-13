@@ -103,42 +103,103 @@ bool DoubleLinkedList<T>::remove(int i) {
 	DoubleLinkedListNode<T>* child = node->next;
 
 	if (parent == nullptr && child == nullptr) {
+		//only node in the list
+		first = nullptr;
+		last = nullptr;
+
+		delete node;
 		return true;
 	}
 	if (parent == nullptr) {
+		//first node in the list
+		first = nullptr;
+
 		node->next = nullptr;
 		child->last = nullptr;
 
+		delete node;
 		return true;
 	}
 	if (child == nullptr) {
+		//last node in the list
+		last = nullptr;
+
 		node->last = nullptr;
 		parent->next = nullptr;
 
+		delete node;
 		return true;
 	}
 
+	//in the midsection of the list
 	node->last = nullptr;
 	node->next = nullptr;
 
 	parent->next = child;
 	child->last = parent;
 
+	delete node;
 	return true;
 }
 
 
 template<typename T>
-void DoubleLinkedList<T>::insert(T value, int atIndex) {
+void DoubleLinkedList<T>::insert(T* value, int atIndex) {
+	//insertions just after the last node should be treated as appends
+	if (atIndex == length) {
+		append(value);
+		return;
+	}
 
+	DoubleLinkedListNode<T>* newChild = seek(atIndex);
+	if (newChild == nullptr) {
+		return false;
+	}
+
+	//the new node should take the place of the child
+	DoubleLinkedListNode<T>* newNode = new DoubleLinkedListNode<T>(value);
+	newNode->last = newChild->last;
+	newNode->next = newChild;
+	newChild->last = newNode;
+
+	//ensure first is accurate
+	if (newChild == first) {
+		first = newNode;
+	}
 }
 
 template<typename T>
-void DoubleLinkedList<T>::insertFront(T value) {
+void DoubleLinkedList<T>::insertFront(T* value) {
+	DoubleLinkedListNode<T>* newNode = new DoubleLinkedListNode<T>(value);
 
+	if (first != nullptr) {
+		//non-empty list, replace first
+		newNode->next = first;
+		first->last = newNode;
+
+		first = newNode;
+	}
+	else {
+		//empty list, first node to be added
+		first = newNode;
+		last = newNode;
+	}
 }
 
 template<typename T>
-void DoubleLinkedList<T>::append(T value) {
+void DoubleLinkedList<T>::append(T* value) {
+	DoubleLinkedListNode<T>* newNode = new DoubleLinkedListNode<T>(value);
 
+	if (last != nullptr) {
+		//non-empty list, replace last
+		last->next = newNode;
+		newNode->last = last;
+
+		last = newNode;
+	}
+	else {
+		//empty list, first node to be added
+		first = newNode;
+		last = newNode;
+	}
 }
